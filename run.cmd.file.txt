@@ -1,0 +1,29 @@
+@echo off
+REM Physics Wallah Lectures Downloader Runner
+REM Run with: run.cmd <COURSE_ID> [<COOKIE>] [WORKERS]
+
+setlocal enabledelayedexpansion
+
+REM Check arguments
+IF "%~1"=="" (
+    echo ERROR: Course ID required!
+    exit /b 1
+)
+
+REM Define defaults
+set OUTDIR=%USERPROFILE%\PhysicsWallah\%1
+set WORKERS=3
+
+REM Override defaults if provided
+IF NOT "%~2"=="" set COOKIE=%~2
+IF NOT "%~3"=="" set WORKERS=%~3
+
+REM Create output dir if needed
+md "!OUTDIR!" 2>nul
+
+REM Run script
+echo Starting download of course !1
+echo Cookie: %COOKIE%
+python main.py !1 --cookie "%COOKIE%" --workers %WORKERS% --outdir "!OUTDIR!"
+
+endlocal
